@@ -5,4 +5,3 @@ selectors:
       union:
         - method: fqn
           value: commerce.intermediate.*
-          parents: true                    # ← traverses ref() edges UPWARD to include seeds
