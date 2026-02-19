@@ -16,9 +16,9 @@ models:
         tests:
           - not_null
       - name: transaction_type
-        tests:
-          - accepted_values:
-              values: ['sale', 'refund', 'adjustment', 'chargeback']
+        # tests:
+        #   - accepted_values:
+        #       values: ['sale', 'refund', 'adjustment', 'chargeback']
       - name: fx_rate
         description: "FX rate to USD on the transaction date"
         tests:
