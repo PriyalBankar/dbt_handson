@@ -6,4 +6,3 @@ selectors:
         - method: fqn
           value: commerce.intermediate.*
           parents: true                    # ← traverses ref() edges UPWARD to include seeds
-          indirect_selection: buildable    # ← only run tests when all tested nodes are selected
