@@ -5,3 +5,16 @@ selectors:
       union:
         - method: fqn
           value: commerce.intermediate.*
+          indirect_selection: buildable
+          # parents: true
+        - method: fqn
+          value: commerce.edw.*
+          indirect_selection: buildable
+          parents: true
+
+        - method: fqn
+          value: commerce.semantic.*
+          indirect_selection: buildable
+          parents: true
+        
+
