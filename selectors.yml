@@ -5,4 +5,4 @@ selectors:
       union:
         - method: fqn
           value: commerce.intermediate.*
-          indirect_selection: buildable    # ← only run tests when all tested nodes are selected
+          parents: true                    # ← traverses ref() edges UPWARD to include seeds
