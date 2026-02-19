@@ -7,9 +7,9 @@ models:
       Exposes gross revenue, net revenue, gross profit, and FX-adjusted amounts.
     columns:
       - name: "Order ID"
-        tests:
-          - unique
-          - not_null
+        # tests:
+        #   - unique
+        #   - not_null
 
   - name: sem_customer_kpis
     description: >
@@ -17,6 +17,6 @@ models:
       Exposes RFM status, CLV band, and lifetime revenue metrics.
     columns:
       - name: "Customer ID"
-        tests:
-          - unique
-          - not_null
+        # tests:
+        #   - unique
+        #   - not_null

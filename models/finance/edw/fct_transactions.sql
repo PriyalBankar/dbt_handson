@@ -15,7 +15,7 @@
 
 with transactions as (
 
-    select * from {{ ref('stg_transactions') }}
+    select *,'col' as dummy from {{ ref('stg_transactions') }}
 
 ),
 
