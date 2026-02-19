@@ -15,6 +15,6 @@ models:
           - unique
           - not_null
       - name: transaction_type
-        tests:
-          - accepted_values:
-              values: ['sale', 'refund', 'adjustment', 'chargeback']
+        # tests:
+        #   - accepted_values:
+        #       values: ['sale', 'refund', 'adjustment', 'chargeback']

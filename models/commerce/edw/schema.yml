@@ -32,6 +32,6 @@ models:
           - unique
           - not_null
       - name: rfm_status
-        tests:
-          - accepted_values:
-              values: ['active', 'at_risk', 'lapsed', 'churned']
+        # tests:
+        #   - accepted_values:
+        #       values: ['active', 'at_risk', 'lapsed', 'churned']

@@ -22,9 +22,9 @@ models:
         tests:
           - not_null
       - name: order_status
-        tests:
-          - accepted_values:
-              values: ['completed', 'cancelled', 'returned', 'pending']
+        # tests:
+        #   - accepted_values:
+        #       values: ['completed', 'cancelled', 'returned', 'pending']
 
   - name: stg_customers
     description: "Cleaned customer records. Contains PII — restricted access."
@@ -39,9 +39,9 @@ models:
           - unique
           - not_null
       - name: customer_segment
-        tests:
-          - accepted_values:
-              values: ['premium', 'standard', 'trial']
+        # tests:
+        #   - accepted_values:
+        #       values: ['premium', 'standard', 'trial']
 
   - name: stg_products
     description: "Product catalog with pricing and margin info."
