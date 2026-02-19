@@ -1,0 +1,200 @@
+selectors:
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # DOMAIN SELECTORS
+  # Run every model in a given business domain (any layer)
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  - name: domain_commerce
+    description: "All models in the commerce domain (staging → semantic)"
+    definition:
+      method: path
+      value: models/commerce
+
+  - name: domain_finance
+    description: "All models in the finance domain (staging → semantic)"
+    definition:
+      method: path
+      value: models/finance
+
+  - name: all_domains
+    description: "All business domain models — entire project"
+    definition:
+      union:
+        - method: path
+          value: models/commerce
+        - method: path
+          value: models/finance
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # LAYER SELECTORS
+  # Run models of a specific architectural layer across ALL domains
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  - name: all_staging
+    description: "All staging models across all domains"
+    definition:
+      method: tag
+      value: staging
+
+  - name: all_intermediate
+    description: "All intermediate models across all domains"
+    definition:
+      method: tag
+      value: intermediate
+
+  - name: all_edw
+    description: "All EDW fact/dim tables across all domains"
+    definition:
+      method: tag
+      value: edw
+
+  - name: semantic_layer_refresh
+    description: "All semantic layer views — refresh after EDW completes"
+    definition:
+      method: tag
+      value: semantic
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # DOMAIN + LAYER INTERSECTION SELECTORS
+  # Pinpoint a specific domain AND layer using intersection (AND logic)
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  - name: commerce_staging
+    description: "Commerce staging only"
+    definition:
+      intersection:
+        - method: tag
+          value: commerce
+        - method: tag
+          value: staging
+
+  - name: commerce_edw
+    description: "Commerce EDW fact/dim tables only"
+    definition:
+      intersection:
+        - method: tag
+          value: commerce
+        - method: tag
+          value: edw
+
+  - name: finance_staging
+    description: "Finance staging only"
+    definition:
+      intersection:
+        - method: tag
+          value: finance
+        - method: tag
+          value: staging
+
+  - name: finance_edw
+    description: "Finance EDW tables only"
+    definition:
+      intersection:
+        - method: tag
+          value: finance
+        - method: tag
+          value: edw
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # CROSS-DOMAIN / GRAPH SELECTORS
+  # These use DAG traversal (+parents, children+) to handle cross-domain deps
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  - name: orders_enriched_with_parents
+    description: >
+      int_orders_enriched + ALL upstream ancestors including the finance domain's
+      int_finance_daily. Use this when finance FX rates change.
+      CLI: dbt run --select +int_orders_enriched
+    definition:
+      method: fqn
+      value: "+int_orders_enriched"
+
+  - name: finance_daily_with_children
+    description: >
+      int_finance_daily + ALL downstream models that depend on it.
+      Cascades into the commerce domain (int_orders_enriched).
+      CLI: dbt run --select int_finance_daily+
+    definition:
+      method: fqn
+      value: "int_finance_daily+"
+
+  - name: cross_domain_models
+    description: "Models explicitly tagged cross_domain — models that ref across domain boundary"
+    definition:
+      method: tag
+      value: cross_domain
+
+  - name: cross_domain_with_parents
+    description: "Cross-domain models + 2 levels of upstream parents"
+    definition:
+      method: fqn
+      value: "2+tag:cross_domain"
+
+  - name: fct_orders_full_chain
+    description: "fct_orders + its full upstream DAG (all layers)"
+    definition:
+      method: fqn
+      value: "+fct_orders"
+
+  - name: fct_orders_hotfix
+    description: "fct_orders + immediate parents only (1 level). Use for quick hotfixes."
+    definition:
+      method: fqn
+      value: "1+fct_orders"
+
+  - name: fct_orders_downstream
+    description: "fct_orders + everything downstream (semantic layer etc.)"
+    definition:
+      method: fqn
+      value: "fct_orders+"
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # CI / CD SELECTORS
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  - name: slim_ci
+    description: >
+      Slim CI — only models that changed vs production OR are brand new,
+      plus their downstream children. Requires --defer --state ./prod_artifacts.
+      CLI: dbt build --selector slim_ci --defer --state ./prod_artifacts
+    definition:
+      union:
+        - method: state
+          value: modified+
+        - method: state
+          value: new
+
+  - name: nightly_incremental_edw
+    description: >
+      All incremental EDW models. Run nightly with --full-refresh to prevent
+      data drift. CLI: dbt run --selector nightly_incremental_edw --full-refresh
+    definition:
+      intersection:
+        - method: tag
+          value: edw
+        - method: config
+          value: "materialized:incremental"
+
+  - name: no_pii
+    description: >
+      All models EXCLUDING those tagged pii. Use for analytics sandbox or
+      sharing with non-privileged roles.
+    definition:
+      difference:
+        - method: path
+          value: models
+        - method: tag
+          value: pii
+
+  - name: nightly_full_build
+    description: "Full nightly build: staging → edw, all domains. Excludes semantic (separate job)."
+    definition:
+      difference:
+        - union:
+            - method: path
+              value: models/commerce
+            - method: path
+              value: models/finance
+        - method: tag
+          value: semantic

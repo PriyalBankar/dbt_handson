@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: int_finance_daily
+    description: >
+      Daily FX rates and transaction aggregates per currency.
+      Used as a cross-domain reference by commerce.int_orders_enriched
+      to enrich orders with FX conversion.
+    columns:
+      - name: rate_date
+        description: "Date of the FX rate"
+        tests:
+          - not_null
+      - name: currency_code
+        tests:
+          - not_null
+      - name: fx_rate
+        description: "Average USD exchange rate for this currency on this date"
+        tests:
+          - not_null
+      - name: net_revenue_usd
+        tests:
+          - not_null

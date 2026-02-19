@@ -1,0 +1,35 @@
+version: 2
+
+models:
+  - name: int_orders_enriched
+    description: >
+      Enriched orders joining commerce staging (orders, customers, products)
+      with the finance domain's int_finance_daily for FX rates.
+      This is the primary cross-domain model in the commerce pipeline.
+    columns:
+      - name: order_id
+        tests:
+          - unique
+          - not_null
+      - name: recognized_revenue_usd
+        description: "Revenue only counted for completed orders"
+      - name: fx_rate
+        description: "FX rate sourced from finance domain's int_finance_daily"
+
+  - name: int_customer_360
+    description: >
+      Aggregated customer-level view combining profile and order behaviour.
+      Feeds dim_customer in the EDW layer.
+    columns:
+      - name: customer_id
+        tests:
+          - unique
+          - not_null
+      - name: rfm_status
+        tests:
+          - accepted_values:
+              values: ['active', 'at_risk', 'lapsed', 'churned']
+      - name: clv_band
+        tests:
+          - accepted_values:
+              values: ['high', 'medium', 'low']

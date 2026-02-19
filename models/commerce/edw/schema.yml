@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: fct_orders
+    description: >
+      Primary orders fact table. Grain: one row per order.
+      Includes FX-enriched amounts sourced via the finance domain cross-domain ref.
+    columns:
+      - name: order_sk
+        description: "Surrogate key (dbt_utils hash)"
+        tests:
+          - unique
+          - not_null
+      - name: order_id
+        tests:
+          - unique
+          - not_null
+      - name: recognized_revenue_usd
+        description: "Revenue only for completed orders (0 for cancelled/returned)"
+
+  - name: dim_customer
+    description: >
+      Customer dimension (SCD Type 1). Grain: one row per customer.
+      Excludes PII — email/phone not present here.
+    columns:
+      - name: customer_sk
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        tests:
+          - unique
+          - not_null
+      - name: rfm_status
+        tests:
+          - accepted_values:
+              values: ['active', 'at_risk', 'lapsed', 'churned']

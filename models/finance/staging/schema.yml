@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: stg_transactions
+    description: "Cleaned financial transactions. One row per transaction."
+    columns:
+      - name: transaction_id
+        description: "Unique transaction identifier"
+        tests:
+          - unique
+          - not_null
+      - name: order_id
+        tests:
+          - not_null
+      - name: transaction_date
+        tests:
+          - not_null
+      - name: transaction_type
+        tests:
+          - accepted_values:
+              values: ['sale', 'refund', 'adjustment', 'chargeback']
+      - name: fx_rate
+        description: "FX rate to USD on the transaction date"
+        tests:
+          - not_null

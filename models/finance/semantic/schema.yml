@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: sem_finance_summary
+    description: >
+      Finance transaction view for CFO/finance dashboards.
+      Grain: one row per transaction with business-friendly naming.
+    columns:
+      - name: "Transaction ID"
+        tests:
+          - unique
+          - not_null

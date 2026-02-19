@@ -1,0 +1,67 @@
+name: "my_ecommerce_dbt"
+version: "1.0.0"
+config-version: 2
+
+profile: "my_ecommerce_dbt"
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+snapshot-paths: ["snapshots"]
+macro-paths: ["macros"]
+analysis-paths: ["analyses"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  my_ecommerce_dbt:
+
+    commerce:
+      staging:
+        +materialized: view
+        +tags: ["commerce", "staging"]
+        +schema: "COMMERCE_STAGING"
+
+      intermediate:
+        +materialized: incremental
+        +tags: ["commerce", "intermediate"]
+        +schema: "COMMERCE_INT"
+        +on_schema_change: "append_new_columns"
+
+      edw:
+        +materialized: table
+        +tags: ["commerce", "edw"]
+        +schema: "COMMERCE_EDW"
+
+      semantic:
+        +materialized: view
+        +tags: ["commerce", "semantic"]
+        +schema: "COMMERCE_SEMANTIC"
+
+    finance:
+      staging:
+        +materialized: view
+        +tags: ["finance", "staging"]
+        +schema: "FINANCE_STAGING"
+
+      intermediate:
+        +materialized: table
+        +tags: ["finance", "intermediate"]
+        +schema: "FINANCE_INT"
+
+      edw:
+        +materialized: table
+        +tags: ["finance", "edw"]
+        +schema: "FINANCE_EDW"
+
+      semantic:
+        +materialized: view
+        +tags: ["finance", "semantic"]
+        +schema: "FINANCE_SEMANTIC"
+
+seeds:
+  my_ecommerce_dbt:
+    +schema: "SEEDS"

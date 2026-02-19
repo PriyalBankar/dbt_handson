@@ -1,0 +1,11 @@
+customer_id,first_name,last_name,email,phone,country,city,signup_date,customer_segment,is_active
+C001,Alice,Smith,alice.smith@email.com,+1-555-0101,US,New York,2023-03-15,premium,true
+C002,Bob,Jones,bob.jones@email.com,+1-555-0102,US,Chicago,2023-04-20,standard,true
+C003,Carol,Williams,carol.w@email.com,+44-20-7946-0103,UK,London,2023-05-10,premium,true
+C004,David,Brown,david.b@email.com,+33-1-4000-0104,FR,Paris,2023-06-01,standard,true
+C005,Eva,Davis,eva.d@email.com,+1-555-0105,US,Los Angeles,2023-07-15,premium,true
+C006,Frank,Miller,frank.m@email.com,+44-20-7946-0106,UK,Manchester,2023-08-01,standard,false
+C007,Grace,Wilson,grace.w@email.com,+1-555-0107,US,Seattle,2023-09-10,premium,true
+C008,Hank,Moore,hank.m@email.com,+1-555-0108,US,Denver,2023-10-01,standard,true
+C009,Iris,Taylor,iris.t@email.com,+1-555-0109,US,Boston,2023-11-15,standard,true
+C010,Jack,Anderson,jack.a@email.com,+44-20-7946-0110,UK,Birmingham,2023-12-01,premium,true

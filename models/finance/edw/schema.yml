@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: fct_transactions
+    description: >
+      Financial transactions fact table. Grain: one row per transaction.
+      Joins to int_finance_daily for daily context.
+    columns:
+      - name: transaction_sk
+        tests:
+          - unique
+          - not_null
+      - name: transaction_id
+        tests:
+          - unique
+          - not_null
+      - name: transaction_type
+        tests:
+          - accepted_values:
+              values: ['sale', 'refund', 'adjustment', 'chargeback']

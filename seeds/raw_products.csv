@@ -1,0 +1,11 @@
+product_id,product_name,category,subcategory,unit_cost_usd,list_price_usd,is_active,launch_date,supplier_id
+P101,Wireless Headphones Pro,Electronics,Audio,85.00,250.00,true,2023-01-01,S01
+P102,Ergonomic Mouse,Electronics,Peripherals,40.00,180.50,true,2023-01-15,S01
+P103,Leather Notebook A5,Stationery,Notebooks,18.00,95.00,true,2023-02-01,S02
+P104,Standing Desk Converter,Furniture,Desk Accessories,120.00,320.75,true,2023-02-15,S03
+P105,4K Webcam,Electronics,Peripherals,145.00,410.00,true,2023-03-01,S01
+P106,Mechanical Keyboard,Electronics,Peripherals,180.00,560.00,true,2023-03-15,S01
+P107,Desk Lamp LED,Furniture,Lighting,22.00,75.00,true,2023-04-01,S03
+P108,Ultrawide Monitor 34",Electronics,Displays,310.00,890.00,true,2023-04-15,S04
+P109,Cable Management Kit,Accessories,Organization,35.00,125.00,true,2023-05-01,S02
+P110,Wireless Charger Pad,Electronics,Accessories,60.00,220.00,true,2023-05-15,S01
